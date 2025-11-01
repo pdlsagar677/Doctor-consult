@@ -1,3 +1,5 @@
+"use client";
+
 import { Appointment } from "@/store/appointmentStore";
 import React, { useCallback, useEffect, useRef } from "react";
 import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";

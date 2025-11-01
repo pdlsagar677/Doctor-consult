@@ -10,46 +10,74 @@ const passportLib = require('passport');
 
 const response = require('./middleware/response');
 
-
-
 const app = express();
 
-//helmet is a security middleware for Express 
-//It helps protect your app by settings various HTTP headers
+// Security middleware
 app.use(helmet());
 
-//morgan is an HTTP request logger middleware
+// HTTP request logger
 app.use(morgan('dev'))
+
+// Enhanced CORS configuration
+const allowedOrigins = (process.env.ALLOWED_ORIGINS || 'http://localhost:3000,http://localhost:3001,http://192.168.1.74:3000')
+  .split(',')
+  .map(s => s.trim())
+  .filter(Boolean);
+
+console.log('🌐 Allowed CORS Origins:', allowedOrigins);
+
 app.use(cors({
-    origin: (process.env.ALLOWED_ORIGINS || 'http://localhost:3001,http://localhost:3000').split(',').map(s => s.trim()).filter(Boolean),
+    origin: allowedOrigins,
     credentials: true
 }));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
-
-//used response
+// Response middleware
 app.use(response);
 
-
-//Initialize passport
+// Initialize passport
 app.use(passportLib.initialize());
 
-//Mongodb connection
+// MongoDB connection
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 }).then(() => console.log('MongoDB connected'))
 .catch(err => console.error('MongoDB connection error:', err));
 
+// Routes
 app.use('/api/auth', require('./routes/auth'))
 app.use('/api/doctor', require('./routes/doctor'))
 app.use('/api/patient', require('./routes/patient'))
 app.use('/api/appointment', require('./routes/appointment'))
 app.use('/api/payment',require('./routes/payment'))
 
-app.get('/health', (req,res) => res.ok({time: new Date().toISOString()}, 'OK'))
+// Health check
+app.get('/health', (req,res) => res.ok({
+  time: new Date().toISOString(),
+  server: 'Backend Server',
+  status: 'Running',
+  clientIP: req.ip
+}, 'OK'))
 
+// Test endpoint for mobile
+app.get('/api/test-mobile', (req, res) => {
+  res.ok({
+    message: 'Mobile connection successful!',
+    clientIP: req.ip,
+    timestamp: new Date().toISOString()
+  }, 'Mobile test working');
+});
 
-const PORT = process.env.PORT ;
-app.listen(PORT , () => console.log(`Server listening on ${PORT}`));
+const PORT = process.env.PORT || 5000;
+
+// FIX: Listen on all network interfaces for mobile access
+app.listen(PORT, '0.0.0.0', () => {
+  console.log('\n🚀 Server started successfully!');
+  console.log(`📍 Local: http://localhost:${PORT}`);
+  console.log(`🌐 Network: http://192.168.1.74:${PORT}`);
+  console.log(`📱 Mobile access: http://192.168.1.74:${PORT}`);
+  console.log('✅ Backend ready for mobile testing!');
+});
