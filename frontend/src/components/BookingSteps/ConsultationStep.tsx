@@ -1,7 +1,6 @@
 import { consultationTypes } from "@/lib/constant";
 import React from "react";
 import { Label } from "../ui/label";
-import { Icon } from "lucide-react";
 import { Badge } from "../ui/badge";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";

@@ -5,7 +5,6 @@ const morgan = require('morgan')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 require('dotenv').config();
-require('./config/passport')
 const passportLib = require('passport');
 
 const response = require('./middleware/response');
@@ -19,7 +18,7 @@ app.use(helmet());
 app.use(morgan('dev'))
 
 // Enhanced CORS configuration
-const allowedOrigins = (process.env.ALLOWED_ORIGINS || 'http://localhost:3000,http://localhost:3001,http://192.168.1.74:3000')
+const allowedOrigins = (process.env.ALLOWED_ORIGINS )
   .split(',')
   .map(s => s.trim())
   .filter(Boolean);
@@ -76,8 +75,5 @@ const PORT = process.env.PORT || 5000;
 // FIX: Listen on all network interfaces for mobile access
 app.listen(PORT, '0.0.0.0', () => {
   console.log('\n🚀 Server started successfully!');
-  console.log(`📍 Local: http://localhost:${PORT}`);
-  console.log(`🌐 Network: http://192.168.1.74:${PORT}`);
-  console.log(`📱 Mobile access: http://192.168.1.74:${PORT}`);
-  console.log('✅ Backend ready for mobile testing!');
+
 });
