@@ -5,7 +5,7 @@ import { CheckCircle, XCircle, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
-export default function PaymentStatusPage() {
+export default function PaymentStatusContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   
@@ -174,7 +174,6 @@ export default function PaymentStatusPage() {
                 >
                   Go to Dashboard Now
                 </Button>
-               
               </div>
             </CardContent>
           </Card>
