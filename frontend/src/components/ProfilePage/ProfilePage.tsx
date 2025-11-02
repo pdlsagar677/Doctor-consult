@@ -10,6 +10,10 @@ import {
   Stethoscope,
   User,
   X,
+  Heart,
+  Shield,
+  Sparkles,
+  Calendar,
 } from "lucide-react";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { Label } from "../ui/label";
@@ -19,7 +23,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Card, CardContent } from "../ui/card";
 import { Button } from "../ui/button";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
-import { el } from "date-fns/locale";
 import {
   Select,
   SelectContent,
@@ -34,6 +37,7 @@ import { Checkbox } from "../ui/checkbox";
 interface ProfileProps {
   userType: "doctor" | "patient";
 }
+
 const ProfilePage = ({ userType }: ProfileProps) => {
   const { user, fetchProfile, updateProfile, loading } = userAuthStore();
   const [activeSection, setActiveSection] = useState("about");
@@ -67,7 +71,6 @@ const ProfilePage = ({ userType }: ProfileProps) => {
       phone: "",
       relationship: "",
     },
-
     availabilityRange: {
       startDate: "",
       endDate: "",
@@ -76,6 +79,9 @@ const ProfilePage = ({ userType }: ProfileProps) => {
     dailyTimeRanges: [],
     slotDurationMinutes: 30,
   });
+
+  // Available slot durations in minutes
+  const slotDurations = [5, 10, 15, 20, 30, 45, 60, 90, 120];
 
   useEffect(() => {
     fetchProfile();
@@ -122,7 +128,7 @@ const ProfilePage = ({ userType }: ProfileProps) => {
     }
   }, [user]);
 
-  const handleInputChnage = (field: string, value: any) => {
+  const handleInputChange = (field: string, value: any) => {
     if (field.includes(".")) {
       const [parent, child] = field.split(".");
       setFormData((prev: any) => ({
@@ -136,7 +142,8 @@ const ProfilePage = ({ userType }: ProfileProps) => {
       setFormData((prev: any) => ({ ...prev, [field]: value }));
     }
   };
-  const handleArrayChnage = (
+
+  const handleArrayChange = (
     field: string,
     index: number,
     subField: string,
@@ -152,7 +159,7 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 
   const handleCategorySelect = (category: any): void => {
     if (!formData.category.includes(category.title)) {
-      handleInputChnage("category", [...formData.category, category.title]);
+      handleInputChange("category", [...formData.category, category.title]);
     }
   };
 
@@ -202,7 +209,7 @@ const ProfilePage = ({ userType }: ProfileProps) => {
       excludedWeekdays.push(weekday);
     }
 
-    handleInputChnage("availabilityRange.excludedWeekdays", excludedWeekdays);
+    handleInputChange("availabilityRange.excludedWeekdays", excludedWeekdays);
   };
 
   const handleSave = async () => {
@@ -240,12 +247,12 @@ const ProfilePage = ({ userType }: ProfileProps) => {
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="flex flex-col gap-2">
-          <Label>Legal first name</Label>
+          <Label className="text-sm font-semibold text-gray-700">Legal first name</Label>
           <Input
             value={formData.name}
-            onChange={(e) => handleInputChnage("name", e.target.value)}
+            onChange={(e) => handleInputChange("name", e.target.value)}
             disabled={!isEditing}
-            className="w-80"
+            className="border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all duration-200"
           />
         </div>
       </div>
@@ -253,7 +260,7 @@ const ProfilePage = ({ userType }: ProfileProps) => {
       {userType === "patient" && (
         <>
           <div className="flex flex-col gap-2">
-            <Label>Official date of birth</Label>
+            <Label className="text-sm font-semibold text-gray-700">Official date of birth</Label>
             <Input
               type="date"
               value={
@@ -262,52 +269,52 @@ const ProfilePage = ({ userType }: ProfileProps) => {
                   : ""
               }
               onChange={(e) =>
-                handleInputChnage(
+                handleInputChange(
                   "dob",
                   e.target.value
-                    ? new Date(formData.dob).toISOString().split("T")[0]
+                    ? new Date(e.target.value).toISOString()
                     : ""
                 )
               }
               disabled={!isEditing}
-              className="w-80"
+              className="border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all duration-200"
             />
           </div>
 
           <div className="flex flex-col gap-2">
-            <Label>Gender</Label>
+            <Label className="text-sm font-semibold text-gray-700">Gender</Label>
             <RadioGroup
               value={formData.gender || ""}
-              onValueChange={(value) => handleInputChnage("gender", value)}
+              onValueChange={(value) => handleInputChange("gender", value)}
               disabled={!isEditing}
               className="flex space-y-2"
             >
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="male" id="male" />
-                <Label htmlFor="male">Male</Label>
+                <RadioGroupItem value="male" id="male" className="text-orange-600" />
+                <Label htmlFor="male" className="text-gray-700">Male</Label>
               </div>
 
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="female" id="female" />
-                <Label htmlFor="female">Female</Label>
+                <RadioGroupItem value="female" id="female" className="text-orange-600" />
+                <Label htmlFor="female" className="text-gray-700">Female</Label>
               </div>
 
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="other" id="other" />
-                <Label htmlFor="other">Other</Label>
+                <RadioGroupItem value="other" id="other" className="text-orange-600" />
+                <Label htmlFor="other" className="text-gray-700">Other</Label>
               </div>
             </RadioGroup>
           </div>
 
           <div className="flex flex-col gap-2">
-            <Label>Blood Group</Label>
+            <Label className="text-sm font-semibold text-gray-700">Blood Group</Label>
             <Select
               value={formData.bloodGroup || ""}
-              onValueChange={(value) => handleInputChnage("bloodGroup", value)}
+              onValueChange={(value) => handleInputChange("bloodGroup", value)}
               disabled={!isEditing}
             >
-              <SelectTrigger>
-                <SelectValue placeholder="Select a bood group" />
+              <SelectTrigger className="border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-200">
+                <SelectValue placeholder="Select a blood group" />
               </SelectTrigger>
               <SelectContent>
                 {["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].map(
@@ -325,12 +332,13 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 
       {userType === "doctor" && (
         <div>
-          <Label>About</Label>
+          <Label className="text-sm font-semibold text-gray-700">About</Label>
           <Textarea
             value={formData.about || ""}
-            onChange={(e) => handleInputChnage("about", e.target.value)}
+            onChange={(e) => handleInputChange("about", e.target.value)}
             disabled={!isEditing}
             rows={4}
+            className="border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all duration-200"
           />
         </div>
       )}
@@ -340,13 +348,13 @@ const ProfilePage = ({ userType }: ProfileProps) => {
   const renderProfessionalSection = () => (
     <div className="space-y-6">
       <div className="flex flex-col gap-2">
-        <Label>Specialization</Label>
+        <Label className="text-sm font-semibold text-gray-700">Specialization</Label>
         <Select
           value={formData.specialization || ""}
-          onValueChange={(value) => handleInputChnage("specialization", value)}
+          onValueChange={(value) => handleInputChange("specialization", value)}
           disabled={!isEditing}
         >
-          <SelectTrigger>
+          <SelectTrigger className="border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-200">
             <SelectValue placeholder="Select specialization" />
           </SelectTrigger>
           <SelectContent>
@@ -360,19 +368,19 @@ const ProfilePage = ({ userType }: ProfileProps) => {
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label>Category</Label>
+        <Label className="text-sm font-semibold text-gray-700">Category</Label>
         <div className="flex flex-wrap gap-2 mt-2">
           {formData.category?.map((cat: string, index: number) => (
             <Badge
               key={index}
               variant="secondary"
-              className="flex items-center spacex-1"
+              className="flex items-center space-x-1 bg-orange-100 text-orange-700 border-orange-200"
             >
               <span>{cat}</span>
               {isEditing && (
                 <button
                   type="button"
-                  className="ml-1 p-0 border-0 bg-transparent cursor-pointer hover:bg-gray-200 rounded-full"
+                  className="ml-1 p-0 border-0 bg-transparent cursor-pointer hover:bg-orange-200 rounded-full transition-colors duration-200"
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
@@ -396,7 +404,7 @@ const ProfilePage = ({ userType }: ProfileProps) => {
                 }
               }}
             >
-              <SelectTrigger className="w-48">
+              <SelectTrigger className="w-48 border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-200">
                 <SelectValue placeholder="Add Category" />
               </SelectTrigger>
               <SelectContent>
@@ -423,35 +431,38 @@ const ProfilePage = ({ userType }: ProfileProps) => {
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label>Qualification</Label>
+        <Label className="text-sm font-semibold text-gray-700">Qualification</Label>
         <Input
           value={formData.qualification || ""}
-          onChange={(e) => handleInputChnage("qualification", e.target.value)}
+          onChange={(e) => handleInputChange("qualification", e.target.value)}
           disabled={!isEditing}
+          className="border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all duration-200"
         />
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label>Experience (years)</Label>
+        <Label className="text-sm font-semibold text-gray-700">Experience (years)</Label>
         <Input
           type="number"
           value={formData.experience || ""}
           onChange={(e) =>
-            handleInputChnage("experience", parseInt(e.target.value) || 0)
+            handleInputChange("experience", parseInt(e.target.value) || 0)
           }
           disabled={!isEditing}
+          className="border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all duration-200"
         />
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label>Consultation Fee(₹)</Label>
+        <Label className="text-sm font-semibold text-gray-700">Consultation Fee(₹)</Label>
         <Input
           type="number"
           value={formData.fees || ""}
           onChange={(e) =>
-            handleInputChnage("fees", parseInt(e.target.value) || 0)
+            handleInputChange("fees", parseInt(e.target.value) || 0)
           }
           disabled={!isEditing}
+          className="border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all duration-200"
         />
       </div>
     </div>
@@ -460,36 +471,39 @@ const ProfilePage = ({ userType }: ProfileProps) => {
   const renderHospitalSection = () => (
     <div className="space-y-6">
       <div className="flex flex-col gap-2">
-        <Label>Hospital/Clinic Name</Label>
+        <Label className="text-sm font-semibold text-gray-700">Hospital/Clinic Name</Label>
         <Input
           value={formData.hospitalInfo?.name || ""}
           onChange={(e) =>
-            handleInputChnage("hospitalInfo?.name", e.target.value)
+            handleInputChange("hospitalInfo.name", e.target.value)
           }
           disabled={!isEditing}
+          className="border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all duration-200"
         />
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label>Address</Label>
+        <Label className="text-sm font-semibold text-gray-700">Address</Label>
         <Textarea
           value={formData.hospitalInfo?.address || ""}
           onChange={(e) =>
-            handleInputChnage("hospitalInfo?.address", e.target.value)
+            handleInputChange("hospitalInfo.address", e.target.value)
           }
           disabled={!isEditing}
           rows={3}
+          className="border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all duration-200"
         />
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label>City</Label>
+        <Label className="text-sm font-semibold text-gray-700">City</Label>
         <Input
           value={formData.hospitalInfo?.city || ""}
           onChange={(e) =>
-            handleInputChnage("hospitalInfo?.city", e.target.value)
+            handleInputChange("hospitalInfo.city", e.target.value)
           }
           disabled={!isEditing}
+          className="border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all duration-200"
         />
       </div>
     </div>
@@ -499,32 +513,35 @@ const ProfilePage = ({ userType }: ProfileProps) => {
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="flex flex-col gap-2">
-          <Label>Available From Date</Label>
+          <Label className="text-sm font-semibold text-gray-700">Available From Date</Label>
           <Input
             type="date"
             value={formatDateForInput(formData.availabilityRange?.startDate)}
             onChange={(e) =>
-              handleInputChnage("availabilityRange?.startDate", e.target.value)
+              handleInputChange("availabilityRange.startDate", e.target.value)
             }
             disabled={!isEditing}
+            className="border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all duration-200"
           />
         </div>
 
         <div className="flex flex-col gap-2">
-          <Label>Available Until Date</Label>
+          <Label className="text-sm font-semibold text-gray-700">Available Until Date</Label>
           <Input
             type="date"
             value={formatDateForInput(formData.availabilityRange?.endDate)}
             onChange={(e) =>
-              handleInputChnage("availabilityRange?.endDate", e.target.value)
+              handleInputChange("availabilityRange.endDate", e.target.value)
             }
             disabled={!isEditing}
+            className="border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all duration-200"
           />
         </div>
       </div>
+
       <div className="flex flex-col gap-2">
-        <Label>Excluded Weekdays</Label>
-        <div className="flex flex-wrap gap-2">
+        <Label className="text-sm font-semibold text-gray-700">Excluded Weekdays</Label>
+        <div className="flex flex-wrap gap-4">
           {[
             "Sunday",
             "Monday",
@@ -543,15 +560,16 @@ const ProfilePage = ({ userType }: ProfileProps) => {
                 }
                 onCheckedChange={() => handleWeekdayToggle(index)}
                 disabled={!isEditing}
+                className="text-orange-600 border-2 border-gray-300 data-[state=checked]:bg-orange-600 data-[state=checked]:border-orange-600"
               />
-              <span className="text-sm">{day}</span>
+              <span className="text-sm text-gray-700">{day}</span>
             </label>
           ))}
         </div>
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label>Daily Time Range</Label>
+        <Label className="text-sm font-semibold text-gray-700">Daily Time Range</Label>
         <div className="space-y-3">
           {formData.dailyTimeRanges?.map((timeRange: any, index: number) => (
             <div className="flex items-center space-x-2" key={index}>
@@ -559,7 +577,7 @@ const ProfilePage = ({ userType }: ProfileProps) => {
                 type="time"
                 value={timeRange.start || ""}
                 onChange={(e) =>
-                  handleArrayChnage(
+                  handleArrayChange(
                     "dailyTimeRanges",
                     index,
                     "start",
@@ -567,13 +585,14 @@ const ProfilePage = ({ userType }: ProfileProps) => {
                   )
                 }
                 disabled={!isEditing}
+                className="border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all duration-200"
               />
-              <span>to</span>
+              <span className="text-gray-600">to</span>
               <Input
                 type="time"
                 value={timeRange.end || ""}
                 onChange={(e) =>
-                  handleArrayChnage(
+                  handleArrayChange(
                     "dailyTimeRanges",
                     index,
                     "end",
@@ -581,6 +600,7 @@ const ProfilePage = ({ userType }: ProfileProps) => {
                   )
                 }
                 disabled={!isEditing}
+                className="border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all duration-200"
               />
 
               {isEditing && (
@@ -588,6 +608,7 @@ const ProfilePage = ({ userType }: ProfileProps) => {
                   variant="outline"
                   size="sm"
                   onClick={() => removeTimeRange(index)}
+                  className="border-2 border-gray-200 rounded-xl hover:border-red-500 hover:bg-red-50 transition-all duration-200"
                 >
                   <X className="w-4 h-4" />
                 </Button>
@@ -596,7 +617,12 @@ const ProfilePage = ({ userType }: ProfileProps) => {
           ))}
 
           {isEditing && (
-            <Button variant="outline" size="sm" onClick={addTimeRange}>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={addTimeRange}
+              className="border-2 border-gray-200 rounded-xl hover:border-orange-500 hover:bg-orange-50 transition-all duration-200"
+            >
               <Plus className="w-4 h-4 mr-2" />
               Add Time Range
             </Button>
@@ -605,25 +631,23 @@ const ProfilePage = ({ userType }: ProfileProps) => {
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label>Slot Duration (minutes)</Label>
+        <Label className="text-sm font-semibold text-gray-700">Slot Duration</Label>
         <Select
           value={formData.slotDurationMinutes?.toString() || "30"}
           onValueChange={(value) =>
-            handleInputChnage("slotDurationMinutes", parseInt(value))
+            handleInputChange("slotDurationMinutes", parseInt(value))
           }
           disabled={!isEditing}
         >
-          <SelectTrigger>
-            <SelectValue placeholder="Select slot duration"></SelectValue>
+          <SelectTrigger className="border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-200">
+            <SelectValue placeholder="Select slot duration" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="15">15 minutes</SelectItem>
-            <SelectItem value="20">20 minutes</SelectItem>
-            <SelectItem value="30">30 minutes</SelectItem>
-            <SelectItem value="45">45 minutes</SelectItem>
-            <SelectItem value="60">60 minutes</SelectItem>
-            <SelectItem value="90">90 minutes</SelectItem>
-            <SelectItem value="120">120 minutes</SelectItem>
+            {slotDurations.map((duration) => (
+              <SelectItem key={duration} value={duration.toString()}>
+                {duration} minutes
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>
@@ -633,17 +657,22 @@ const ProfilePage = ({ userType }: ProfileProps) => {
   const renderContactSection = () => (
     <div className="space-y-6">
       <div className="flex flex-col gap-2">
-        <Label>Phone Number</Label>
+        <Label className="text-sm font-semibold text-gray-700">Phone Number</Label>
         <Input
           value={formData.phone || ""}
-          onChange={(e) => handleInputChnage("phone", e.target.value)}
+          onChange={(e) => handleInputChange("phone", e.target.value)}
           disabled={!isEditing}
+          className="border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all duration-200"
         />
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label>Phone Number</Label>
-        <Input value={formData.email || ""} disabled={true} />
+        <Label className="text-sm font-semibold text-gray-700">Email Address</Label>
+        <Input 
+          value={formData.email || ""} 
+          disabled={true} 
+          className="border-2 border-gray-200 rounded-xl bg-gray-50"
+        />
       </div>
     </div>
   );
@@ -651,44 +680,47 @@ const ProfilePage = ({ userType }: ProfileProps) => {
   const renderMedicalSection = () => (
     <div className="space-y-6">
       <div className="flex flex-col gap-2">
-        <Label>Allergies</Label>
+        <Label className="text-sm font-semibold text-gray-700">Allergies</Label>
         <Textarea
           value={formData.medicalHistory.allergies || ""}
           onChange={(e) =>
-            handleInputChnage("medicalHistory.allergies", e.target.value)
+            handleInputChange("medicalHistory.allergies", e.target.value)
           }
           disabled={!isEditing}
           rows={3}
+          className="border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all duration-200"
         />
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label>Current Medications</Label>
+        <Label className="text-sm font-semibold text-gray-700">Current Medications</Label>
         <Textarea
           value={formData.medicalHistory.currentMedications || ""}
           onChange={(e) =>
-            handleInputChnage(
+            handleInputChange(
               "medicalHistory.currentMedications",
               e.target.value
             )
           }
           disabled={!isEditing}
           rows={3}
+          className="border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all duration-200"
         />
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label>Chronic Conditions</Label>
+        <Label className="text-sm font-semibold text-gray-700">Chronic Conditions</Label>
         <Textarea
           value={formData.medicalHistory.chronicConditions || ""}
           onChange={(e) =>
-            handleInputChnage(
+            handleInputChange(
               "medicalHistory.chronicConditions",
               e.target.value
             )
           }
           disabled={!isEditing}
           rows={3}
+          className="border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all duration-200"
         />
       </div>
     </div>
@@ -697,39 +729,43 @@ const ProfilePage = ({ userType }: ProfileProps) => {
   const renderEmergencySection = () => (
     <div className="space-y-6">
       <div className="flex flex-col gap-2">
-        <Label>Emerygency Contact Name</Label>
+        <Label className="text-sm font-semibold text-gray-700">Emergency Contact Name</Label>
         <Input
           value={formData.emergencyContact?.name || ""}
           onChange={(e) =>
-            handleInputChnage("emergencyContact?.name", e.target.value)
+            handleInputChange("emergencyContact.name", e.target.value)
           }
           disabled={!isEditing}
+          className="border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all duration-200"
         />
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label>Emerygency Contact Phone</Label>
+        <Label className="text-sm font-semibold text-gray-700">Emergency Contact Phone</Label>
         <Input
           value={formData.emergencyContact?.phone || ""}
           onChange={(e) =>
-            handleInputChnage("emergencyContact?.phone", e.target.value)
+            handleInputChange("emergencyContact.phone", e.target.value)
           }
           disabled={!isEditing}
+          className="border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all duration-200"
         />
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label>Relationship</Label>
+        <Label className="text-sm font-semibold text-gray-700">Relationship</Label>
         <Input
           value={formData.emergencyContact?.relationship || ""}
           onChange={(e) =>
-            handleInputChnage("emergencyContact?.relationship", e.target.value)
+            handleInputChange("emergencyContact.relationship", e.target.value)
           }
           disabled={!isEditing}
+          className="border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all duration-200"
         />
       </div>
     </div>
   );
+
   const renderContent = () => {
     switch (activeSection) {
       case "about":
@@ -752,71 +788,111 @@ const ProfilePage = ({ userType }: ProfileProps) => {
   };
 
   if (!user) return <div>Loading...</div>;
+
   return (
     <>
       <Header showDashboardNav={true} />
-      <div className="min-h-screen bg-gray-50 pt-16">
+      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-blue-50 pt-16">
         <div className="container mx-auto px-4 py-8">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900">Records</h1>
+            <div className="flex items-center space-x-3 mb-4">
+              <div className="bg-gradient-to-r from-orange-500 to-blue-600 p-2 rounded-xl shadow-lg">
+                <User className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900">Profile Settings</h1>
+                <p className="text-gray-600">Manage your personal and professional information</p>
+              </div>
+            </div>
           </div>
 
           <div className="flex items-center space-x-8 mb-8">
             <div className="flex flex-col items-center">
-              <Avatar className="w-24 h-24">
+              <Avatar className="w-24 h-24 border-4 border-orange-200">
                 <AvatarImage src={user?.profileImage} alt={user?.name} />
-                <AvatarFallback className="bg-blue-100 text-blue-600 text-2xl font-bold">
+                <AvatarFallback className="bg-gradient-to-br from-orange-500 to-orange-600 text-white text-2xl font-bold">
                   {user?.name?.charAt(0).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
-              <p className="mt-2 text-lg font-semibold">{user?.name}</p>
+              <p className="mt-2 text-lg font-semibold text-gray-900">{user?.name}</p>
+              <p className="text-sm text-gray-500 capitalize">{user?.type}</p>
             </div>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            {/* Sidebar */}
             <div className="lg:col-span-1">
-              <div className="space-y-2">
-                {sidebarItems.map((item) => (
-                  <button
-                    key={item.id}
-                    onClick={() => setActiveSection(item.id)}
-                    className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors ${
-                      activeSection === item.id
-                        ? "bg-blue-100 text-blue-600 border border-blue-200"
-                        : "text-gray-600 hover:bg-gray-100"
-                    }`}
-                  >
-                    <item.icon className="w-5 h-5" />
-                    <span>{item.label}</span>
-                  </button>
-                ))}
-              </div>
+              <Card className="border-0 shadow-xl rounded-2xl bg-white/80 backdrop-blur-sm">
+                <CardContent className="p-6">
+                  <div className="space-y-2">
+                    {sidebarItems.map((item) => (
+                      <button
+                        key={item.id}
+                        onClick={() => setActiveSection(item.id)}
+                        className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-left transition-all duration-200 ${
+                          activeSection === item.id
+                            ? "bg-gradient-to-r from-orange-50 to-orange-100 text-orange-600 font-semibold border border-orange-200 shadow-sm"
+                            : "text-gray-600 hover:text-orange-600 hover:bg-orange-50"
+                        }`}
+                      >
+                        <item.icon className="w-5 h-5" />
+                        <span className="font-medium">{item.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
             </div>
+
+            {/* Main Content */}
             <div className="lg:col-span-3">
-              <Card>
+              <Card className="border-0 shadow-xl rounded-2xl bg-white/80 backdrop-blur-sm">
+                <div className="h-2 bg-gradient-to-r from-orange-500 via-orange-400 to-blue-500"></div>
                 <CardContent className="p-8">
                   <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-2xl font-semibold capitalize">
-                      {
-                        sidebarItems.find((item) => item.id === activeSection)
-                          ?.label
-                      }
-                    </h2>
-                    <div className="flex space-x-2">
+                    <div>
+                      <h2 className="text-2xl font-bold text-gray-900 capitalize">
+                        {
+                          sidebarItems.find((item) => item.id === activeSection)
+                            ?.label
+                        }
+                      </h2>
+                      <p className="text-gray-600 mt-1">
+                        Manage your {sidebarItems.find((item) => item.id === activeSection)?.label.toLowerCase()} information
+                      </p>
+                    </div>
+                    <div className="flex space-x-3">
                       {isEditing ? (
                         <>
                           <Button
                             variant="outline"
                             onClick={() => setIsEditing(false)}
+                            className="border-2 border-gray-200 rounded-xl hover:border-gray-300 transition-all duration-200"
                           >
                             Cancel
                           </Button>
-                          <Button onClick={handleSave} disabled={loading}>
-                            {loading ? "Saving..." : "Save"}
+                          <Button 
+                            onClick={handleSave} 
+                            disabled={loading}
+                            className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
+                          >
+                            {loading ? (
+                              <div className="flex items-center space-x-2">
+                                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                <span>Saving...</span>
+                              </div>
+                            ) : (
+                              "Save Changes"
+                            )}
                           </Button>
                         </>
                       ) : (
-                        <Button onClick={() => setIsEditing(true)}>Edit</Button>
+                        <Button 
+                          onClick={() => setIsEditing(true)}
+                          className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
+                        >
+                          Edit Profile
+                        </Button>
                       )}
                     </div>
                   </div>
