@@ -18,7 +18,7 @@ app.use(helmet());
 app.use(morgan('dev'))
 
 // Enhanced CORS configuration
-const allowedOrigins = (process.env.ALLOWED_ORIGINS )
+const allowedOrigins = (process.env.FRONTEND_URL )
   .split(',')
   .map(s => s.trim())
   .filter(Boolean);
