@@ -82,14 +82,16 @@ const Header: React.FC<HeaderProps> = ({ showDashboardNav = false }) => {
         {/* Left side -> logo + navigation */}
         <div className="flex items-center space-x-8">
           <Link href="/" className="flex items-center space-x-3 group">
-            <div className="bg-gradient-to-r from-orange-500 to-blue-600 p-2 rounded-xl shadow-lg group-hover:shadow-xl transition-all duration-300">
+            <div className="bg-gradient-to-r from-emerald-500 to-teal-500 p-2 rounded-xl shadow-lg group-hover:shadow-xl transition-all duration-300">
               <Heart className="w-6 h-6 text-white" fill="white" />
             </div>
             <div className="text-left">
-              <div className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-blue-600 bg-clip-text text-transparent">
+              <div className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
                 HealthHub
               </div>
-              <p className="text-xs text-gray-600 font-medium -mt-1">Medical Excellence</p>
+              <p className="text-xs text-gray-600 font-medium -mt-1">
+                Medical Excellence
+              </p>
             </div>
           </Link>
 
@@ -102,8 +104,8 @@ const Header: React.FC<HeaderProps> = ({ showDashboardNav = false }) => {
                   href={item.href}
                   className={`flex items-center space-x-2 px-4 py-2 rounded-xl transition-all duration-200 ${
                     item.active
-                      ? "bg-gradient-to-r from-orange-50 to-orange-100 text-orange-600 font-semibold border border-orange-200 shadow-sm"
-                      : "text-gray-600 hover:text-orange-600 hover:bg-orange-50"
+                      ? "bg-gradient-to-r from-emerald-50 to-teal-50 text-emerald-700 font-semibold border border-emerald-200 shadow-sm"
+                      : "text-gray-600 hover:text-emerald-700 hover:bg-emerald-50"
                   }`}
                 >
                   <item.icon className="w-4 h-4" />
@@ -116,13 +118,13 @@ const Header: React.FC<HeaderProps> = ({ showDashboardNav = false }) => {
 
         {isAuthenticated && showDashboardNav ? (
           <div className="flex items-center space-x-3">
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="relative p-2 rounded-xl hover:bg-orange-50 hover:text-orange-600 transition-colors duration-200"
+            <Button
+              variant="ghost"
+              size="sm"
+              className="relative p-2 rounded-xl hover:bg-emerald-50 hover:text-emerald-700 transition-colors duration-200"
             >
               <Bell className="w-5 h-5" />
-              <Badge className="absolute -top-1 -right-1 w-5 h-5 text-xs bg-gradient-to-r from-orange-500 to-orange-600 text-white flex items-center justify-center">
+              <Badge className="absolute -top-1 -right-1 w-5 h-5 text-xs bg-gradient-to-r from-emerald-500 to-teal-500 text-white flex items-center justify-center">
                 4
               </Badge>
             </Button>
@@ -131,14 +133,11 @@ const Header: React.FC<HeaderProps> = ({ showDashboardNav = false }) => {
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
-                  className="flex items-center space-x-3 px-3 py-2 rounded-xl hover:bg-orange-50 transition-all duration-200"
+                  className="flex items-center space-x-3 px-3 py-2 rounded-xl hover:bg-emerald-50 transition-all duration-200"
                 >
-                  <Avatar className="w-8 h-8 border-2 border-orange-200">
-                    <AvatarImage
-                      src={user?.profileImage}
-                      alt={user?.name}
-                    />
-                    <AvatarFallback className="bg-gradient-to-br from-orange-500 to-orange-600 text-white text-sm font-semibold">
+                  <Avatar className="w-8 h-8 border-2 border-emerald-200">
+                    <AvatarImage src={user?.profileImage} alt={user?.name} />
+                    <AvatarFallback className="bg-gradient-to-br from-emerald-500 to-teal-500 text-white text-sm font-semibold">
                       {user?.name?.charAt(0)?.toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
@@ -152,26 +151,36 @@ const Header: React.FC<HeaderProps> = ({ showDashboardNav = false }) => {
                   </div>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-64 rounded-xl shadow-xl border border-gray-200">
+              <DropdownMenuContent
+                align="end"
+                className="w-64 rounded-xl shadow-xl border border-gray-200"
+              >
                 <DropdownMenuLabel className="p-4">
                   <div className="flex items-center space-x-3">
-                    <Avatar className="w-12 h-12 border-2 border-orange-200">
+                    <Avatar className="w-12 h-12 border-2 border-emerald-200">
                       <AvatarImage
                         src={user?.profileImage}
                         alt={user?.name}
                       />
-                      <AvatarFallback className="bg-gradient-to-br from-orange-500 to-orange-600 text-white text-lg font-semibold">
+                      <AvatarFallback className="bg-gradient-to-br from-emerald-500 to-teal-500 text-white text-lg font-semibold">
                         {user?.name?.charAt(0)?.toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-gray-900 truncate">{user?.name}</p>
-                      <p className="text-sm text-gray-500 truncate">{user?.email}</p>
+                      <p className="font-semibold text-gray-900 truncate">
+                        {user?.name}
+                      </p>
+                      <p className="text-sm text-gray-500 truncate">
+                        {user?.email}
+                      </p>
                     </div>
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem asChild className="p-3 cursor-pointer rounded-lg m-1 hover:bg-orange-50">
+                <DropdownMenuItem
+                  asChild
+                  className="p-3 cursor-pointer rounded-lg m-1 hover:bg-emerald-50"
+                >
                   <Link
                     href={`/${user?.type}/profile`}
                     className="flex items-center"
@@ -180,7 +189,10 @@ const Header: React.FC<HeaderProps> = ({ showDashboardNav = false }) => {
                     <span className="font-medium">Profile</span>
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild className="p-3 cursor-pointer rounded-lg m-1 hover:bg-orange-50">
+                <DropdownMenuItem
+                  asChild
+                  className="p-3 cursor-pointer rounded-lg m-1 hover:bg-emerald-50"
+                >
                   <Link
                     href={`/${user?.type}/settings`}
                     className="flex items-center"
@@ -207,14 +219,14 @@ const Header: React.FC<HeaderProps> = ({ showDashboardNav = false }) => {
                 <Link href="/login/patient">
                   <Button
                     variant="ghost"
-                    className="text-gray-700 font-medium hover:text-orange-600 hover:bg-orange-50 rounded-xl px-4 transition-all duration-200"
+                    className="text-gray-700 font-medium hover:text-emerald-700 hover:bg-emerald-50 rounded-xl px-4 transition-all duration-200"
                   >
                     Log in
                   </Button>
                 </Link>
 
                 <Link href="/signup/patient" className="hidden md:block">
-                  <Button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold rounded-xl px-6 py-2 shadow-lg hover:shadow-xl transition-all duration-200">
+                  <Button className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-semibold rounded-xl px-6 py-2 shadow-lg hover:shadow-xl transition-all duration-200">
                     <Stethoscope className="w-4 h-4 mr-2" />
                     Book Consultation
                   </Button>
@@ -222,12 +234,15 @@ const Header: React.FC<HeaderProps> = ({ showDashboardNav = false }) => {
               </>
             ) : (
               <div className="flex items-center space-x-4">
-                <span className="hidden md:block text-sm text-gray-700 font-medium whitespace-nowrap bg-orange-50 px-3 py-1 rounded-full">
-                  Welcome, <span className="text-orange-600 font-semibold">{user?.name}</span>
+                <span className="hidden md:block text-sm text-gray-700 font-medium whitespace-nowrap bg-emerald-50 px-3 py-1 rounded-full">
+                  Welcome,{" "}
+                  <span className="text-emerald-700 font-semibold">
+                    {user?.name}
+                  </span>
                 </span>
 
                 <Link href={`/${user?.type}/dashboard`}>
-                  <Button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold rounded-xl px-6 py-2 shadow-lg hover:shadow-xl transition-all duration-200">
+                  <Button className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-semibold rounded-xl px-6 py-2 shadow-lg hover:shadow-xl transition-all duration-200">
                     Dashboard
                   </Button>
                 </Link>
