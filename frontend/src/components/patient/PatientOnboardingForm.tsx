@@ -1,6 +1,6 @@
 "use client";
 import { userAuthStore } from "@/store/authStore";
-import { Phone, User, Heart, Shield, ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
+import { Phone, User, Heart, Shield, ArrowLeft, ArrowRight, CheckCircle2, Lock } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { ChangeEvent, useState } from "react";
 import { Card, CardContent } from "../ui/card";
@@ -17,11 +17,12 @@ import { Button } from "../ui/button";
 import { Alert, AlertDescription } from "../ui/alert";
 import { Textarea } from "../ui/textarea";
 
-interface EmerfencyContact {
+interface EmergencyContact {
   name: string;
   phone: string;
   relationship: string;
 }
+
 interface MedicalHistory {
   allergies: string;
   currentMedications: string;
@@ -33,7 +34,7 @@ interface PatientOnboardingData {
   dob: string;
   gender: string;
   bloodGroup?: string;
-  emergencyContact: EmerfencyContact;
+  emergencyContact: EmergencyContact;
   medicalHistory: MedicalHistory;
 }
 
@@ -71,7 +72,7 @@ const PatientOnboardingForm = () => {
   };
 
   const handleEmergencyContactChange = (
-    field: keyof EmerfencyContact,
+    field: keyof EmergencyContact,
     value: string
   ): void => {
     setFormData((prev) => ({
@@ -137,16 +138,16 @@ const PatientOnboardingForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-blue-50 py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 py-8 px-4">
       <div className="w-full max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center space-x-3 mb-4">
-            <div className="bg-gradient-to-r from-orange-500 to-blue-600 p-3 rounded-2xl shadow-lg">
+            <div className="bg-gradient-to-r from-emerald-500 to-teal-500 p-3 rounded-2xl shadow-lg">
               <Heart className="h-8 w-8 text-white" fill="white" />
             </div>
             <div className="text-left">
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-600 to-blue-600 bg-clip-text text-transparent">
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
                 HealthHub
               </h1>
               <p className="text-sm text-gray-600 font-medium">Medical Excellence</p>
@@ -154,10 +155,10 @@ const PatientOnboardingForm = () => {
           </div>
 
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Welcome, <span className="text-orange-600">{user?.name}</span>!
+            Complete Your Profile
           </h1>
           <p className="text-gray-600 text-lg">
-            Complete your profile to start your healthcare journey
+            Help us provide you with the best possible care
           </p>
         </div>
 
@@ -170,9 +171,9 @@ const PatientOnboardingForm = () => {
                   <div
                     className={`flex items-center justify-center w-12 h-12 rounded-full border-2 transition-all duration-300 ${
                       currentStep >= step
-                        ? "bg-gradient-to-r from-orange-500 to-orange-600 border-orange-600 text-white shadow-lg"
+                        ? "bg-gradient-to-r from-emerald-500 to-teal-500 border-emerald-600 text-white shadow-lg"
                         : "border-gray-300 text-gray-400 bg-white"
-                    } ${currentStep === step ? "ring-4 ring-orange-200 scale-110" : ""}`}
+                    } ${currentStep === step ? "ring-4 ring-emerald-200 scale-110" : ""}`}
                   >
                     {currentStep > step ? (
                       <CheckCircle2 className="w-6 h-6" />
@@ -182,7 +183,7 @@ const PatientOnboardingForm = () => {
                   </div>
                   <span
                     className={`text-sm font-medium mt-2 ${
-                      currentStep >= step ? "text-orange-600" : "text-gray-400"
+                      currentStep >= step ? "text-emerald-600" : "text-gray-400"
                     }`}
                   >
                     {stepTitles[step as keyof typeof stepTitles]}
@@ -191,7 +192,7 @@ const PatientOnboardingForm = () => {
                 {step < 3 && (
                   <div
                     className={`w-16 h-1 rounded-full transition-all duration-300 ${
-                      currentStep > step ? "bg-gradient-to-r from-orange-500 to-orange-600" : "bg-gray-300"
+                      currentStep > step ? "bg-gradient-to-r from-emerald-500 to-teal-500" : "bg-gray-300"
                     }`}
                   ></div>
                 )}
@@ -201,11 +202,11 @@ const PatientOnboardingForm = () => {
         </div>
 
         <Card className="border-0 shadow-2xl rounded-3xl overflow-hidden bg-white/80 backdrop-blur-sm">
-          <div className="h-2 bg-gradient-to-r from-orange-500 via-orange-400 to-blue-500"></div>
+          <div className="h-2 bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-500"></div>
           <CardContent className="p-8">
             {/* Step Header */}
             <div className="flex items-center space-x-3 mb-8 pb-4 border-b border-gray-200">
-              <div className="bg-orange-100 p-2 rounded-lg">
+              <div className="bg-emerald-100 p-2 rounded-lg text-emerald-600">
                 {stepIcons[currentStep as keyof typeof stepIcons]}
               </div>
               <div>
@@ -213,9 +214,9 @@ const PatientOnboardingForm = () => {
                   {stepTitles[currentStep as keyof typeof stepTitles]}
                 </h2>
                 <p className="text-gray-600">
-                  {currentStep === 1 && "Tell us about yourself"}
-                  {currentStep === 2 && "Who should we contact in case of emergency?"}
-                  {currentStep === 3 && "Help us understand your medical background"}
+                  {currentStep === 1 && "Basic information for your medical profile"}
+                  {currentStep === 2 && "Emergency contact details for your safety"}
+                  {currentStep === 3 && "Medical background for better care"}
                 </p>
               </div>
             </div>
@@ -226,23 +227,22 @@ const PatientOnboardingForm = () => {
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-3">
                     <Label htmlFor="phone" className="text-sm font-semibold text-gray-700">
-                      Phone Number <span className="text-orange-500">*</span>
+                      Phone Number
                     </Label>
                     <Input
                       id="phone"
                       name="phone"
                       type="tel"
                       value={formData.phone}
-                      placeholder="+91 985467238"
                       onChange={handleInputChange}
-                      className="h-12 px-4 border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all duration-200"
+                      className="h-12 px-4 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all duration-200"
                       required
                     />
                   </div>
 
                   <div className="space-y-3">
                     <Label htmlFor="dob" className="text-sm font-semibold text-gray-700">
-                      Date of Birth <span className="text-orange-500">*</span>
+                      Date of Birth
                     </Label>
                     <Input
                       id="dob"
@@ -250,21 +250,21 @@ const PatientOnboardingForm = () => {
                       type="date"
                       value={formData.dob}
                       onChange={handleInputChange}
-                      className="h-12 px-4 border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all duration-200"
+                      className="h-12 px-4 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all duration-200"
                       required
                     />
                   </div>
 
                   <div className="space-y-3">
                     <Label htmlFor="gender" className="text-sm font-semibold text-gray-700">
-                      Gender <span className="text-orange-500">*</span>
+                      Gender
                     </Label>
                     <Select
                       value={formData.gender}
                       onValueChange={(value) => handleSelectChange("gender", value)}
                     >
-                      <SelectTrigger className="h-12 border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-200">
-                        <SelectValue placeholder="Select gender" />
+                      <SelectTrigger className="h-12 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200">
+                        <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="male">Male</SelectItem>
@@ -282,8 +282,8 @@ const PatientOnboardingForm = () => {
                       value={formData.bloodGroup}
                       onValueChange={(value) => handleSelectChange("bloodGroup", value)}
                     >
-                      <SelectTrigger className="h-12 border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-200">
-                        <SelectValue placeholder="Select blood group" />
+                      <SelectTrigger className="h-12 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200">
+                        <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="A+">A+</SelectItem>
@@ -304,17 +304,17 @@ const PatientOnboardingForm = () => {
             {/* Step 2: Emergency Contact */}
             {currentStep === 2 && (
               <div className="space-y-8">
-                <Alert className="bg-blue-50 border-blue-200 rounded-xl">
-                  <AlertDescription className="text-blue-800 flex items-start space-x-2">
+                <Alert className="bg-emerald-50 border-emerald-200 rounded-xl">
+                  <AlertDescription className="text-emerald-800 flex items-start space-x-2">
                     <Shield className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                    <span>This information will be used to contact someone on your behalf in case of emergency during consultations.</span>
+                    <span>Emergency contact information ensures your safety during medical consultations</span>
                   </AlertDescription>
                 </Alert>
 
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-3 md:col-span-2">
                     <Label htmlFor="emergencyName" className="text-sm font-semibold text-gray-700">
-                      Contact Name <span className="text-orange-500">*</span>
+                      Contact Name
                     </Label>
                     <Input
                       id="emergencyName"
@@ -322,15 +322,14 @@ const PatientOnboardingForm = () => {
                       onChange={(e: ChangeEvent<HTMLInputElement>) =>
                         handleEmergencyContactChange('name', e.target.value)
                       }
-                      placeholder="Full name"
-                      className="h-12 px-4 border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all duration-200"
+                      className="h-12 px-4 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all duration-200"
                       required
                     />
                   </div>
 
                   <div className="space-y-3 md:col-span-2">
                     <Label htmlFor="emergencyPhone" className="text-sm font-semibold text-gray-700">
-                      Contact Phone <span className="text-orange-500">*</span>
+                      Contact Phone
                     </Label>
                     <Input
                       id="emergencyPhone"
@@ -338,15 +337,14 @@ const PatientOnboardingForm = () => {
                       onChange={(e: ChangeEvent<HTMLInputElement>) =>
                         handleEmergencyContactChange('phone', e.target.value)
                       }
-                      placeholder="+91 9919326233"
-                      className="h-12 px-4 border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all duration-200"
+                      className="h-12 px-4 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all duration-200"
                       required
                     />
                   </div>
 
                   <div className="space-y-3">
                     <Label htmlFor="relationship" className="text-sm font-semibold text-gray-700">
-                      Relationship <span className="text-orange-500">*</span>
+                      Relationship
                     </Label>
                     <Select
                       value={formData.emergencyContact.relationship}
@@ -354,8 +352,8 @@ const PatientOnboardingForm = () => {
                         handleEmergencyContactChange("relationship", value)
                       }
                     >
-                      <SelectTrigger className="h-12 border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-200">
-                        <SelectValue placeholder="Select relationship" />
+                      <SelectTrigger className="h-12 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200">
+                        <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="spouse">Spouse</SelectItem>
@@ -375,10 +373,10 @@ const PatientOnboardingForm = () => {
             {/* Step 3: Medical Information */}
             {currentStep === 3 && (
               <div className="space-y-8">
-                <Alert className="bg-green-50 border-green-200 rounded-xl">
-                  <AlertDescription className="text-green-800 flex items-start space-x-2">
-                    <Shield className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                    <span>This information helps doctors provide better care. All information is kept confidential and secure.</span>
+                <Alert className="bg-emerald-50 border-emerald-200 rounded-xl">
+                  <AlertDescription className="text-emerald-800 flex items-start space-x-2">
+                    <Heart className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                    <span>Your medical history helps us provide personalized and effective care</span>
                   </AlertDescription>
                 </Alert>
 
@@ -393,9 +391,8 @@ const PatientOnboardingForm = () => {
                       onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
                         handleMedicalHistoryChange("allergies", e.target.value)
                       }
-                      placeholder="e.g., Penicillin, Peanuts, Dust (or write 'None' if no known allergies)"
                       rows={3}
-                      className="border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all duration-200 resize-none"
+                      className="border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all duration-200 resize-none"
                     />
                   </div>
 
@@ -409,9 +406,8 @@ const PatientOnboardingForm = () => {
                       onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
                         handleMedicalHistoryChange("currentMedications", e.target.value)
                       }
-                      placeholder="List any medications you're currently taking (or write 'None' if not taking any)"
                       rows={3}
-                      className="border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all duration-200 resize-none"
+                      className="border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all duration-200 resize-none"
                     />
                   </div>
 
@@ -425,9 +421,8 @@ const PatientOnboardingForm = () => {
                       onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
                         handleMedicalHistoryChange("chronicConditions", e.target.value)
                       }
-                      placeholder="e.g., Diabetes, Hypertension, Asthma (or write 'None' if no chronic conditions)"
                       rows={3}
-                      className="border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all duration-200 resize-none"
+                      className="border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all duration-200 resize-none"
                     />
                   </div>
                 </div>
@@ -441,7 +436,7 @@ const PatientOnboardingForm = () => {
                 variant="outline"
                 onClick={handlePrevious}
                 disabled={currentStep === 1}
-                className="h-12 px-6 rounded-xl border-2 border-gray-300 hover:border-orange-500 hover:bg-orange-50 transition-all duration-200"
+                className="h-12 px-6 rounded-xl border-2 border-gray-300 hover:border-emerald-500 hover:bg-emerald-50 text-gray-700 transition-all duration-200"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Previous
@@ -459,9 +454,9 @@ const PatientOnboardingForm = () => {
                         !formData.emergencyContact.phone ||
                         !formData.emergencyContact.relationship))
                   }
-                  className="h-12 px-8 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5"
+                  className="h-12 px-8 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5"
                 >
-                  Next
+                  Continue
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               ) : (
@@ -469,17 +464,17 @@ const PatientOnboardingForm = () => {
                   type="button"
                   onClick={handleSubmit}
                   disabled={loading}
-                  className="h-12 px-8 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5"
+                  className="h-12 px-8 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5"
                 >
                   {loading ? (
                     <div className="flex items-center space-x-2">
                       <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                      <span>Completing Setup...</span>
+                      <span>Saving...</span>
                     </div>
                   ) : (
                     <div className="flex items-center space-x-2">
                       <CheckCircle2 className="w-4 h-4" />
-                      <span>Complete Profile</span>
+                      <span>Complete Setup</span>
                     </div>
                   )}
                 </Button>
@@ -489,7 +484,7 @@ const PatientOnboardingForm = () => {
             {/* Security Footer */}
             <div className="mt-6 text-center">
               <div className="inline-flex items-center space-x-2 text-xs text-gray-500 bg-gray-100 px-4 py-2 rounded-full">
-                <Shield className="h-3 w-3 text-green-500" />
+                <Lock className="h-3 w-3 text-emerald-500" />
                 <span>HIPAA Compliant • End-to-End Encrypted</span>
               </div>
             </div>
