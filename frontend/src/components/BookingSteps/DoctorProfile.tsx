@@ -2,7 +2,7 @@ import { Doctor } from "@/lib/types";
 import React from "react";
 import { Card, CardContent } from "../ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Award, Heart, MapPin, Star, Stethoscope, Sparkles, Clock, Shield } from "lucide-react";
+import { Award, Heart, MapPin, Star, Stethoscope, Sparkles, Clock, Shield, Users, ThumbsUp, Zap } from "lucide-react";
 import { Badge } from "../ui/badge";
 
 interface DoctorProfileInterface {
@@ -11,21 +11,21 @@ interface DoctorProfileInterface {
 
 const DoctorProfile = ({ doctor }: DoctorProfileInterface) => {
   return (
-    <Card className="sticky top-8 shadow-2xl border-0 rounded-2xl overflow-hidden bg-white/80 backdrop-blur-sm">
+    <Card className="sticky top-8 shadow-2xl border-0 rounded-3xl overflow-hidden bg-white/90 backdrop-blur-sm">
       {/* Gradient Header */}
-      <div className="h-2 bg-gradient-to-r from-orange-500 via-orange-400 to-blue-500"></div>
+      <div className="h-2 bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-500"></div>
       
       <CardContent className="p-8">
         <div className="text-center mb-8">
           {/* Doctor Avatar */}
           <div className="relative inline-block mb-6">
-            <Avatar className="w-32 h-32 mx-auto border-4 border-orange-200 shadow-lg">
+            <Avatar className="w-32 h-32 mx-auto border-4 border-emerald-200 shadow-xl">
               <AvatarImage
                 src={doctor?.profileImage}
                 alt={doctor?.name}
                 className="object-cover"
               />
-              <AvatarFallback className="bg-gradient-to-br from-orange-500 to-orange-600 text-white text-3xl font-bold">
+              <AvatarFallback className="bg-gradient-to-br from-emerald-500 to-teal-500 text-white text-3xl font-bold">
                 {doctor?.name?.charAt(0)?.toUpperCase()}
               </AvatarFallback>
             </Avatar>
@@ -41,14 +41,14 @@ const DoctorProfile = ({ doctor }: DoctorProfileInterface) => {
             {doctor.name}
           </h2>
           <div className="flex items-center justify-center space-x-2 mb-2">
-            <Stethoscope className="w-4 h-4 text-orange-500" />
+            <Stethoscope className="w-4 h-4 text-emerald-500" />
             <p className="text-gray-600 font-medium">{doctor.specialization}</p>
           </div>
           <p className="text-sm text-gray-500 mb-3">{doctor.qualification}</p>
           
           {/* Experience */}
           <div className="flex items-center justify-center space-x-2 mb-4 text-sm text-gray-600">
-            <Award className="w-4 h-4 text-orange-500" />
+            <Award className="w-4 h-4 text-emerald-500" />
             <span>{doctor.experience} years experience</span>
           </div>
 
@@ -59,7 +59,7 @@ const DoctorProfile = ({ doctor }: DoctorProfileInterface) => {
                 {[1, 2, 3, 4, 5].map((star) => (
                   <Star
                     key={star}
-                    className="w-4 h-4 fill-orange-400 text-orange-400"
+                    className="w-4 h-4 fill-emerald-400 text-emerald-400"
                   />
                 ))}
               </div>
@@ -71,19 +71,13 @@ const DoctorProfile = ({ doctor }: DoctorProfileInterface) => {
           {/* Badges */}
           <div className="flex justify-center flex-wrap gap-2 mb-8">
             {doctor.isVerified && (
-              <Badge
-                variant="secondary"
-                className="bg-green-100 text-green-700 border-green-200 px-3 py-1"
-              >
+              <Badge className="bg-emerald-100 text-emerald-700 border-emerald-200 px-3 py-1">
                 <Shield className="w-3 h-3 mr-1" />
                 Verified Doctor
               </Badge>
             )}
 
-            <Badge
-              variant="secondary"
-              className="bg-orange-100 text-orange-700 border-orange-200 px-3 py-1"
-            >
+            <Badge className="bg-teal-100 text-teal-700 border-teal-200 px-3 py-1">
               <Sparkles className="w-3 h-3 mr-1" />
               Available Today
             </Badge>
@@ -91,8 +85,7 @@ const DoctorProfile = ({ doctor }: DoctorProfileInterface) => {
             {doctor.category.slice(0, 2).map((cat, idx) => (
               <Badge
                 key={idx}
-                variant="secondary"
-                className="bg-blue-100 text-blue-700 border-blue-200 px-3 py-1"
+                className="bg-emerald-50 text-emerald-600 border-emerald-100 px-3 py-1"
               >
                 {cat}
               </Badge>
@@ -103,29 +96,31 @@ const DoctorProfile = ({ doctor }: DoctorProfileInterface) => {
         {/* Information Sections */}
         <div className="space-y-6">
           {/* About Section */}
-          <div className="bg-gradient-to-r from-orange-50 to-orange-100 p-6 rounded-2xl border border-orange-200">
-            <div className="flex items-center space-x-2 mb-3">
-              <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
-                <Stethoscope className="w-4 h-4 text-white" />
+          <div className="bg-gradient-to-r from-emerald-50 to-teal-50 p-6 rounded-2xl border border-emerald-200">
+            <div className="flex items-center space-x-3 mb-4">
+              <div className="w-10 h-10 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-xl flex items-center justify-center">
+                <Stethoscope className="w-5 h-5 text-white" />
               </div>
               <h3 className="font-bold text-gray-900 text-lg">About Doctor</h3>
             </div>
-            <p className="text-sm text-gray-700 leading-relaxed">{doctor.about || "Experienced healthcare professional dedicated to providing quality medical care with a patient-centered approach."}</p>
+            <p className="text-sm text-gray-700 leading-relaxed">
+              {doctor.about || "Experienced healthcare professional dedicated to providing quality medical care with a patient-centered approach."}
+            </p>
           </div>
 
           {/* Hospital/Clinic Information */}
           {doctor.hospitalInfo && (
-            <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-6 rounded-2xl border border-blue-200">
-              <div className="flex items-center space-x-2 mb-3">
-                <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
-                  <MapPin className="w-4 h-4 text-white" />
+            <div className="bg-gradient-to-r from-teal-50 to-emerald-50 p-6 rounded-2xl border border-teal-200">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-10 h-10 bg-gradient-to-r from-teal-500 to-emerald-500 rounded-xl flex items-center justify-center">
+                  <MapPin className="w-5 h-5 text-white" />
                 </div>
                 <h3 className="font-bold text-gray-900 text-lg">Hospital/Clinic</h3>
               </div>
-              <div className="text-sm text-gray-700 space-y-2">
+              <div className="text-sm text-gray-700 space-y-3">
                 <p className="font-semibold text-gray-900">{doctor.hospitalInfo.name}</p>
                 <p className="text-gray-600">{doctor.hospitalInfo.address}</p>
-                <div className="flex items-center space-x-2 text-blue-600 font-medium">
+                <div className="flex items-center space-x-2 text-emerald-600 font-medium">
                   <MapPin className="w-4 h-4" />
                   <span>{doctor.hospitalInfo.city}</span>
                 </div>
@@ -134,49 +129,49 @@ const DoctorProfile = ({ doctor }: DoctorProfileInterface) => {
           )}
 
           {/* Consultation Fee */}
-          <div className="bg-gradient-to-r from-green-50 to-green-100 p-6 rounded-2xl border border-green-200 shadow-sm hover:shadow-md transition-all duration-300">
-            <div className="flex items-center justify-between">
+          <div className="bg-gradient-to-r from-emerald-500 to-teal-500 p-6 rounded-2xl text-white shadow-lg hover:shadow-xl transition-all duration-300">
+            <div className="flex items-center justify-between mb-4">
               <div className="flex-1">
-                <div className="flex items-center space-x-2 mb-2">
-                  <div className="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center">
-                    <Clock className="w-4 h-4 text-white" />
+                <div className="flex items-center space-x-3 mb-3">
+                  <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
+                    <Clock className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <p className="text-sm text-green-700 font-semibold">
+                    <p className="font-semibold text-emerald-100">
                       Consultation Fee
                     </p>
-                    <p className="text-xs text-green-600">
+                    <p className="text-sm text-emerald-100/80">
                       {doctor.slotDurationMinutes || 30} minutes session
                     </p>
                   </div>
                 </div>
-                <div className="flex items-baseline space-x-2">
-                  <p className="text-3xl font-bold text-green-800">
+                <div className="flex items-baseline space-x-3">
+                  <p className="text-3xl font-bold text-white">
                     ₹{doctor.fees}
                   </p>
-                  <span className="text-sm text-green-600 line-through opacity-70">
+                  <span className="text-sm text-emerald-100/70 line-through">
                     ₹{doctor.fees + 200}
                   </span>
-                  <Badge className="bg-green-500 text-white text-xs">
+                  <Badge className="bg-white text-emerald-600 text-xs font-bold">
                     Save ₹200
                   </Badge>
                 </div>
               </div>
               
-              <div className="text-green-600 bg-white/50 p-3 rounded-xl border border-green-200">
-                <Heart className="w-8 h-8 fill-green-500 text-green-500" />
+              <div className="bg-white/20 p-3 rounded-xl backdrop-blur-sm border border-white/30">
+                <Heart className="w-8 h-8 fill-white text-white" />
               </div>
             </div>
             
             {/* Additional Info */}
-            <div className="mt-4 pt-4 border-t border-green-200">
-              <div className="grid grid-cols-2 gap-4 text-xs text-green-700">
-                <div className="flex items-center space-x-1">
-                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+            <div className="mt-4 pt-4 border-t border-emerald-400/30">
+              <div className="grid grid-cols-2 gap-4 text-sm text-emerald-100">
+                <div className="flex items-center space-x-2">
+                  <Zap className="w-4 h-4" />
                   <span>Instant Confirmation</span>
                 </div>
-                <div className="flex items-center space-x-1">
-                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <div className="flex items-center space-x-2">
+                  <Clock className="w-4 h-4" />
                   <span>Free Follow-up</span>
                 </div>
               </div>
@@ -184,18 +179,41 @@ const DoctorProfile = ({ doctor }: DoctorProfileInterface) => {
           </div>
 
           {/* Quick Stats */}
-          <div className="grid grid-cols-3 gap-4 text-center">
-            <div className="bg-white p-3 rounded-xl border border-gray-200">
-              <p className="text-2xl font-bold text-orange-600">2K+</p>
-              <p className="text-xs text-gray-600">Patients</p>
+          <div className="grid grid-cols-3 gap-4">
+            <div className="bg-white p-4 rounded-2xl border border-emerald-100 shadow-sm text-center group hover:shadow-md transition-all duration-300">
+              <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center mx-auto mb-2 group-hover:bg-emerald-200 transition-colors">
+                <Users className="w-6 h-6 text-emerald-600" />
+              </div>
+              <p className="text-2xl font-bold text-emerald-600">2K+</p>
+              <p className="text-xs text-gray-600 font-medium">Patients</p>
             </div>
-            <div className="bg-white p-3 rounded-xl border border-gray-200">
-              <p className="text-2xl font-bold text-orange-600">98%</p>
-              <p className="text-xs text-gray-600">Satisfaction</p>
+            <div className="bg-white p-4 rounded-2xl border border-emerald-100 shadow-sm text-center group hover:shadow-md transition-all duration-300">
+              <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center mx-auto mb-2 group-hover:bg-emerald-200 transition-colors">
+                <ThumbsUp className="w-6 h-6 text-emerald-600" />
+              </div>
+              <p className="text-2xl font-bold text-emerald-600">98%</p>
+              <p className="text-xs text-gray-600 font-medium">Satisfaction</p>
             </div>
-            <div className="bg-white p-3 rounded-xl border border-gray-200">
-              <p className="text-2xl font-bold text-orange-600">24/7</p>
-              <p className="text-xs text-gray-600">Available</p>
+            <div className="bg-white p-4 rounded-2xl border border-emerald-100 shadow-sm text-center group hover:shadow-md transition-all duration-300">
+              <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center mx-auto mb-2 group-hover:bg-emerald-200 transition-colors">
+                <Clock className="w-6 h-6 text-emerald-600" />
+              </div>
+              <p className="text-2xl font-bold text-emerald-600">24/7</p>
+              <p className="text-xs text-gray-600 font-medium">Available</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Trust Indicators */}
+        <div className="mt-6 pt-6 border-t border-gray-200">
+          <div className="flex items-center justify-center space-x-4 text-xs text-gray-500">
+            <div className="flex items-center space-x-1">
+              <Shield className="w-3 h-3 text-emerald-500" />
+              <span>HIPAA Compliant</span>
+            </div>
+            <div className="flex items-center space-x-1">
+              <Sparkles className="w-3 h-3 text-emerald-500" />
+              <span>Secure Consultation</span>
             </div>
           </div>
         </div>
