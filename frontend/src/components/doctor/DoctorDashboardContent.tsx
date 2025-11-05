@@ -37,12 +37,9 @@ const DoctorDashboardContent = () => {
   } = useDoctorStore();
 
   const [showPrescriptionModal, setShowPrescriptionModal] = useState(false);
-  const [completingAppointmentId, setCompletingAppointmentId] = useState<
-    string | null
-  >(null);
+  const [completingAppointmentId, setCompletingAppointmentId] = useState<string | null>(null);
   const [modalLoading, setModalLoading] = useState(false);
-  const { endConsultation, fetchAppointmentById, currentAppointment } =
-    useAppointmentStore();
+  const { endConsultation, fetchAppointmentById, currentAppointment } = useAppointmentStore();
 
   useEffect(() => {
     if (user?.type === "doctor") {
@@ -59,20 +56,14 @@ const DoctorDashboardContent = () => {
     }
   }, [searchParams, fetchAppointmentById]);
 
-  const handleSavePrescription = async (
-    prescription: string,
-    notes: string
-  ) => {
+  const handleSavePrescription = async (prescription: string, notes: string) => {
     if (!completingAppointmentId) return;
     setModalLoading(true);
     try {
       await endConsultation(completingAppointmentId, prescription, notes);
       setShowPrescriptionModal(false);
       setCompletingAppointmentId(null);
-
-      if (user?.type) {
-        fetchDashboard(user.type);
-      }
+      if (user?.type) fetchDashboard(user.type);
 
       const url = new URL(window.location.href);
       url.searchParams.delete("completedCall");
@@ -92,25 +83,21 @@ const DoctorDashboardContent = () => {
     window.history.replaceState({}, "", url.pathname);
   };
 
-  const formateDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
+  const formateDate = (dateString: string) =>
+    new Date(dateString).toLocaleDateString("en-US", {
       hour: "2-digit",
       minute: "2-digit",
       hour12: true,
     });
-  };
 
   const canJoinCall = (appointment: any) => {
     const appointmentTime = new Date(appointment.slotStartIso);
     const now = new Date();
-    const diffMintues =
-      (appointmentTime.getTime() - now.getTime()) / (1000 * 60);
-
+    const diffMinutes = (appointmentTime.getTime() - now.getTime()) / (1000 * 60);
     return (
-      diffMintues <= 15 && //not earliar than 15 min before start
-      diffMintues >= -120 && //not later than 2 hours after start
-      (appointment.status === "Scheduled" ||
-        appointment.status === "In Progress")
+      diffMinutes <= 15 &&
+      diffMinutes >= -120 &&
+      (appointment.status === "Scheduled" || appointment.status === "In Progress")
     );
   };
 
@@ -118,7 +105,7 @@ const DoctorDashboardContent = () => {
     return (
       <>
         <Header showDashboardNav={true} />
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 pt-16">
+        <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50 pt-16">
           <div className="container mx-auto px-4 py-8">
             <div className="animate-pulse space-y-8">
               <div className="flex items-center space-x-4">
@@ -147,8 +134,8 @@ const DoctorDashboardContent = () => {
       title: "Total Patients",
       value: dashboardData?.stats?.totalPatients?.toString() || "0",
       icon: Users,
-      color: "text-blue-600",
-      bgColor: "bg-blue-50",
+      color: "text-emerald-600",
+      bgColor: "bg-emerald-50",
       change: "+12%",
       changeColor: "text-green-600",
     },
@@ -165,8 +152,8 @@ const DoctorDashboardContent = () => {
       title: "Total Revenue",
       value: `₹${dashboardData?.stats?.totalRevenue?.toLocaleString() || "0"}`,
       icon: DollarSign,
-      color: "text-purple-600",
-      bgColor: "bg-purple-50",
+      color: "text-lime-600",
+      bgColor: "bg-lime-50",
       change: "+25%",
       changeColor: "text-green-600",
     },
@@ -174,95 +161,72 @@ const DoctorDashboardContent = () => {
       title: "Completed",
       value: dashboardData?.stats?.completedAppointments?.toString() || "0",
       icon: Activity,
-      color: "text-orange-600",
-      bgColor: "bg-orange-50",
+      color: "text-emerald-700",
+      bgColor: "bg-emerald-100",
       change: "+18%",
       changeColor: "text-green-600",
     },
   ];
 
-  console.log(dashboardData);
   return (
     <>
       <Header showDashboardNav={true} />
 
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 pt-16">
+      <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50 pt-16">
         <div className="container mx-auto px-4 py-8">
-          <div className="mb-8">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-4 ">
-                <Avatar className="w-20 h-20 ring-4 ring-blue-100">
-                  <AvatarImage
-                    src={dashboardData?.user?.profileImage}
-                    alt={dashboardData?.user?.name}
-                  />
-                  <AvatarFallback>
-                    {dashboardData?.user?.name?.charAt(0).toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
-
-                <div>
-                  <h1 className="text-md md:text-3xl font-bold text-gray-900">
-                    Good evening, {dashboardData?.user?.name}
-                  </h1>
-                  <p className="text-gray-600 text-xs md:text-lg">
-                    {dashboardData?.user?.specialization}
-                  </p>
-                  <div className="flex items-center space-x-4 mt-2">
-                    <div className="flex items-center space-x-1 text-sm text-gray-500">
-                      <MapPin className="w-4 h-4" />
-                      <span>
-                        {dashboardData?.user?.hospitalInfo?.name},{" "}
-                        {dashboardData?.user?.hospitalInfo?.city}
-                      </span>
-                    </div>
-                    <div className="flex items-center space-x-1">
-                      <Star className="w-4 h-4 fill-orange-400 text-yellow-400" />
-                      <span className="text-sm font-semibold text-gray-700">
-                        {dashboardData?.stats?.averageRating}
-                      </span>
-                    </div>
+          {/* Header */}
+          <div className="mb-8 flex flex-col md:flex-row items-center justify-between">
+            <div className="flex items-center space-x-4 w-full md:w-auto">
+              <Avatar className="w-20 h-20 ring-4 ring-green-100">
+                <AvatarImage src={dashboardData?.user?.profileImage} alt={dashboardData?.user?.name} />
+                <AvatarFallback>{dashboardData?.user?.name?.charAt(0).toUpperCase()}</AvatarFallback>
+              </Avatar>
+              <div>
+                <h1 className="text-md md:text-3xl font-bold text-gray-900">
+                  Good evening, {dashboardData?.user?.name}
+                </h1>
+                <p className="text-gray-600 text-xs md:text-lg">
+                  {dashboardData?.user?.specialization}
+                </p>
+                <div className="flex items-center space-x-4 mt-2">
+                  <div className="flex items-center space-x-1 text-sm text-gray-500">
+                    <MapPin className="w-4 h-4" />
+                    <span>{dashboardData?.user?.hospitalInfo?.name}, {dashboardData?.user?.hospitalInfo?.city}</span>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                    <span className="text-sm font-semibold text-gray-700">
+                      {dashboardData?.stats?.averageRating}
+                    </span>
                   </div>
                 </div>
               </div>
-
-              <div className="hidden md:flex items-center space-x-3">
-                <Link href="/doctor/profile">
-                  <Button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800">
-                    <Plus className="w-4 h-4 mr-2" />
-                    Update Availability
-                  </Button>
-                </Link>
-              </div>
+            </div>
+            <div className="hidden md:flex items-center space-x-3 mt-4 md:mt-0">
+              <Link href="/doctor/profile">
+                <Button className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800">
+                  <Plus className="w-4 h-4 mr-2" />
+                  Update Availability
+                </Button>
+              </Link>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4  gap-6 mb-8">
+          {/* Stats Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {statsCards.map((stat, index) => (
               <Card key={index} className="hover:shadow-lg transition-shadow">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm font-medium text-gray-600 mb-1">
-                        {stat.title}
-                      </p>
-
-                      <p className="text-3xl font-bold text-gray-900">
-                        {stat.value}
-                      </p>
+                      <p className="text-sm font-medium text-gray-600 mb-1">{stat.title}</p>
+                      <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
                       <div className="flex items-center mt-2">
                         <TrendingUp className="w-3 h-3 text-green-600 mr-1" />
-                        <span
-                          className={`text-sm font-medium ${stat.changeColor}`}
-                        >
-                          {stat.change} from last year
-                        </span>
+                        <span className={`text-sm font-medium ${stat.changeColor}`}>{stat.change} from last year</span>
                       </div>
                     </div>
-
-                    <div
-                      className={`w-14 h-14 ${stat.bgColor} rounded-xl flex items-center justify-center`}
-                    >
+                    <div className={`w-14 h-14 ${stat.bgColor} rounded-xl flex items-center justify-center`}>
                       <stat.icon className={`w-7 h-7 ${stat.color}`} />
                     </div>
                   </div>
@@ -272,10 +236,11 @@ const DoctorDashboardContent = () => {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Today's Appointments */}
             <Card className="lg:col-span-2 hover:shadow-lg transition-shadow">
               <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle className="flex items-center space-x-2">
-                  <Calendar className="w-5 h-5 text-blue-500" />
+                  <Calendar className="w-5 h-5 text-green-600" />
                   <span>Today's Schedule</span>
                   <Badge variant="secondary" className="ml-2">
                     {dashboardData?.todayAppointments?.length} appointments
@@ -290,84 +255,61 @@ const DoctorDashboardContent = () => {
 
               <CardContent className="space-y-4">
                 {dashboardData?.todayAppointments?.length > 0 ? (
-                  dashboardData?.todayAppointments?.map(
-                    (appointment: Appointment) => (
-                      <div
-                        key={appointment?._id}
-                        className="flex items-center space-x-4 p-4 border rounded-lg hover:bg-gray-50 transition-colors"
-                      >
-                        <div className="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-lg">
-                          <Clock className="w-6 h-6 text-blue-600" />
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex items-center justify-between">
-                            <h4 className="font-semibold text-gray-900">
-                              {appointment?.patientId?.name}
-                            </h4>
-                            <div className="text-sm font-medium text-blue-600 ">
-                              {formateDate(appointment.slotStartIso)}
-                            </div>
-                          </div>
-
-                          <p className="text-sm text-gray-600 line-clamp-1">
-                            Age: {appointment?.patientId?.age}
-                          </p>
-
-                          <p className="text-sm text-gray-600 line-clamp-1">
-                            {appointment?.symptoms.substring(0, 80)}
-                          </p>
-                          <div className="flex items-center space-x-4 mt-2">
-                            <Badge
-                              className={getStatusColor(appointment.status)}
-                            >
-                              {appointment.status}
-                            </Badge>
-                            <div className="flex items-center space-x-1">
-                              {appointment.consultationType ===
-                              "Video Consultation" ? (
-                                <Video className="w-4 h-4 text-blue-600" />
-                              ) : (
-                                <Phone className="w-4 h-4 text-green-600" />
-                              )}
-                              <span className="text-sm text-gray-500">
-                                ₹{appointment.doctorId?.fees}
-                              </span>
-                            </div>
+                  dashboardData?.todayAppointments.map((appointment: Appointment) => (
+                    <div key={appointment?._id} className="flex items-center space-x-4 p-4 border rounded-lg hover:bg-green-50 transition-colors">
+                      <div className="flex items-center justify-center w-12 h-12 bg-green-100 rounded-lg">
+                        <Clock className="w-6 h-6 text-green-600" />
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between">
+                          <h4 className="font-semibold text-gray-900">{appointment?.patientId?.name}</h4>
+                          <div className="text-sm font-medium text-green-600">
+                            {formateDate(appointment.slotStartIso)}
                           </div>
                         </div>
-                        <div className="flex space-x-2">
-                          {canJoinCall(appointment) && (
-                            <Link href={`/call/${appointment._id}`}>
-                              <Button
-                                size="sm"
-                                className="bg-green-600 hover:bg-green-700"
-                              >
-                                <Video className="w-4 h-4 mr-2" />
-                                Start
-                              </Button>
-                            </Link>
-                          )}
+                        <p className="text-sm text-gray-600 line-clamp-1">Age: {appointment?.patientId?.age}</p>
+                        <p className="text-sm text-gray-600 line-clamp-1">{appointment?.symptoms.substring(0, 80)}</p>
+                        <div className="flex items-center space-x-4 mt-2">
+                          <Badge className={getStatusColor(appointment.status)}>{appointment.status}</Badge>
+                          <div className="flex items-center space-x-1">
+                            {appointment.consultationType === "Video Consultation" ? (
+                              <Video className="w-4 h-4 text-green-600" />
+                            ) : (
+                              <Phone className="w-4 h-4 text-green-500" />
+                            )}
+                            <span className="text-sm text-gray-500">₹{appointment.doctorId?.fees}</span>
+                          </div>
                         </div>
                       </div>
-                    )
-                  )
+                      <div className="flex space-x-2">
+                        {canJoinCall(appointment) && (
+                          <Link href={`/call/${appointment._id}`}>
+                            <Button size="sm" className="bg-green-600 hover:bg-green-700">
+                              <Video className="w-4 h-4 mr-2" />
+                              Start
+                            </Button>
+                          </Link>
+                        )}
+                      </div>
+                    </div>
+                  ))
                 ) : (
                   <div className="text-center py-12">
                     <Calendar className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                      No appointment today
-                    </h3>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">No appointment today</h3>
                     <p className="text-gray-600">Enjoy your free day!</p>
                   </div>
                 )}
               </CardContent>
             </Card>
 
+            {/* Upcoming & Performance */}
             <div className="space-y-6">
+              {/* Upcoming */}
               <Card className="hover:shadow-lg transition-shadow">
                 <CardHeader className="flex flex-row items-center justify-between">
                   <CardTitle className="flex items-center space-x-2">
-                    <Clock className="w-5 h-5 text-blue-500" />
+                    <Clock className="w-5 h-5 text-green-600" />
                     <span>Upcoming</span>
                   </CardTitle>
                   <Link href="/doctor/appointments">
@@ -379,88 +321,60 @@ const DoctorDashboardContent = () => {
 
                 <CardContent className="space-y-4">
                   {dashboardData?.upcomingAppointments?.length > 0 ? (
-                    dashboardData?.upcomingAppointments?.map(
-                      (appointment: Appointment) => (
-                        <div
-                          key={appointment?._id}
-                          className="flex items-center space-x-4 p-4 border rounded-lg hover:bg-gray-50 transition-colors"
-                        >
-                          <Avatar className="w-10 h-10">
-                            <AvatarImage
-                              src={appointment.patientId.profileImage}
-                            />
-                            <AvatarFallback className="bg-green-100 text-green-600 text-sm">
-                              {appointment.patientId?.name?.charAt(0)}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div className="flex-1 min-w-0">
-                            <h4 className="font-semibold text-gray-900 text-sm truncate">
-                              {appointment?.patientId?.name}
-                            </h4>
-                            <div className="text-sm font-medium text-blue-600 ">
-                              {formateDate(appointment.slotStartIso)}
-                            </div>
-                            <div className="flex items-center space-x-1 mt-1">
-                              {appointment.consultationType ===
-                              "Video Consultation" ? (
-                                <Video className="w-4 h-4 text-blue-600" />
-                              ) : (
-                                <Phone className="w-4 h-4 text-green-600" />
-                              )}
-                              <span className="text-sm text-gray-500">
-                                ₹{appointment.doctorId?.fees}
-                              </span>
-                            </div>
+                    dashboardData?.upcomingAppointments.map((appointment: Appointment) => (
+                      <div key={appointment?._id} className="flex items-center space-x-4 p-4 border rounded-lg hover:bg-green-50 transition-colors">
+                        <Avatar className="w-10 h-10">
+                          <AvatarImage src={appointment.patientId.profileImage} />
+                          <AvatarFallback className="bg-green-100 text-green-600 text-sm">
+                            {appointment.patientId?.name?.charAt(0)}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-semibold text-gray-900 text-sm truncate">{appointment?.patientId?.name}</h4>
+                          <div className="text-sm font-medium text-green-600">{formateDate(appointment.slotStartIso)}</div>
+                          <div className="flex items-center space-x-1 mt-1">
+                            {appointment.consultationType === "Video Consultation" ? (
+                              <Video className="w-4 h-4 text-green-600" />
+                            ) : (
+                              <Phone className="w-4 h-4 text-green-500" />
+                            )}
+                            <span className="text-sm text-gray-500">₹{appointment.doctorId?.fees}</span>
                           </div>
                         </div>
-                      )
-                    )
+                      </div>
+                    ))
                   ) : (
                     <div className="text-center py-12">
                       <Clock className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                      <p className="text-sm text-gray-500">
-                        No upcoming appointments
-                      </p>
+                      <p className="text-sm text-gray-500">No upcoming appointments</p>
                     </div>
                   )}
                 </CardContent>
               </Card>
 
+              {/* Performance */}
               <Card className="hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <CardTitle className="flex items-center space-x-2">
-                    <TrendingUp className="w-5 h-5 text-blue-500" />
+                    <TrendingUp className="w-5 h-5 text-green-600" />
                     <span>Performance</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">
-                      Patient Satisfaction
-                    </span>
+                    <span className="text-sm text-gray-600">Patient Satisfaction</span>
                     <div className="flex items-center space-x-1">
                       <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                      <span className="font-semibold">
-                        {dashboardData?.performance?.pateintSatisfaction} / 5
-                      </span>
+                      <span className="font-semibold">{dashboardData?.performance?.pateintSatisfaction} / 5</span>
                     </div>
                   </div>
-
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">
-                      Completion Rate
-                    </span>
-                    <span className="font-semibold text-green-600">
-                      {dashboardData?.performance?.completionRate}
-                    </span>
+                    <span className="text-sm text-gray-600">Completion Rate</span>
+                    <span className="font-semibold text-green-600">{dashboardData?.performance?.completionRate}</span>
                   </div>
-                                <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">
-                      Response Time
-                    </span>
-                    <span className="font-semibold text-blue-600">
-                      {dashboardData?.performance?.responseTime}
-                    </span>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-600">Response Time</span>
+                    <span className="font-semibold text-green-700">{dashboardData?.performance?.responseTime}</span>
                   </div>
                 </CardContent>
               </Card>

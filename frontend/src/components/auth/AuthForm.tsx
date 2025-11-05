@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent } from '@/components/ui/card';
-import { Eye, EyeOff, Stethoscope, Shield, Heart } from 'lucide-react';
+import { Eye, EyeOff, Stethoscope, Shield, Heart, User, Mail, Lock } from 'lucide-react';
 import { userAuthStore } from '@/store/authStore';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -78,10 +78,6 @@ const AuthForm = ({ type, userRole }: AuthFormProps) => {
     }
   };
 
-  const handleGoogleAuth = () => {
-    window.location.href = `${BASE_URL}/auth/google?type=${userRole}`;
-  };
-
   const handleFocus = (field: string) => {
     setIsFocused(prev => ({ ...prev, [field]: true }));
   };
@@ -91,26 +87,26 @@ const AuthForm = ({ type, userRole }: AuthFormProps) => {
   };
 
   const isSignup = type === 'signup';
-  const title = isSignup ? 'Create Your Medical Account' : 'Welcome Back to HealthHub';
+  const title = isSignup ? 'Join HealthHub' : 'Welcome Back';
   const subtitle = isSignup 
-    ? 'Join our trusted healthcare community' 
-    : 'Access your personalized health dashboard';
-  const buttonText = isSignup ? 'Create Secure Account' : 'Sign In to Dashboard';
+    ? 'Create your secure healthcare account' 
+    : 'Sign in to your health dashboard';
+  const buttonText = isSignup ? 'Create Account' : 'Sign In';
   const altLinkText = isSignup ? 'Already have an account?' : "New to HealthHub?";
   const altLinkAction = isSignup ? 'Sign In' : 'Create Account';
   const altLinkPath = isSignup ? `/login/${userRole}` : `/signup/${userRole}`;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-blue-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center space-x-3 mb-4">
-            <div className="bg-gradient-to-r from-orange-500 to-blue-600 p-3 rounded-2xl shadow-lg">
+            <div className="bg-gradient-to-r from-emerald-500 to-teal-500 p-3 rounded-2xl shadow-lg">
               <Heart className="h-8 w-8 text-white" fill="white" />
             </div>
             <div className="text-left">
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-600 to-blue-600 bg-clip-text text-transparent">
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
                 HealthHub
               </h1>
               <p className="text-sm text-gray-600 font-medium">Medical Excellence</p>
@@ -118,17 +114,17 @@ const AuthForm = ({ type, userRole }: AuthFormProps) => {
           </div>
           
           {/* Role Badge */}
-          <div className="inline-flex items-center px-4 py-2 rounded-full bg-orange-100 border border-orange-200 mb-4">
-            <Stethoscope className="h-4 w-4 text-orange-600 mr-2" />
-            <span className="text-sm font-semibold text-orange-800 capitalize">
+          <div className="inline-flex items-center px-4 py-2 rounded-full bg-emerald-100 border border-emerald-200 mb-4">
+            <Stethoscope className="h-4 w-4 text-emerald-600 mr-2" />
+            <span className="text-sm font-semibold text-emerald-800 capitalize">
               {userRole} Portal
             </span>
           </div>
         </div>
 
         {/* Auth Card */}
-        <Card className="border-0 shadow-2xl rounded-3xl overflow-hidden bg-white/80 backdrop-blur-sm">
-          <div className="h-2 bg-gradient-to-r from-orange-500 via-orange-400 to-blue-500"></div>
+        <Card className="border-0 shadow-2xl rounded-3xl overflow-hidden bg-white/90 backdrop-blur-sm">
+          <div className="h-2 bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-500"></div>
           <CardContent className="p-8">
             <div className="text-center mb-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-2">{title}</h2>
@@ -150,6 +146,9 @@ const AuthForm = ({ type, userRole }: AuthFormProps) => {
                     Full Name
                   </Label>
                   <div className="relative">
+                    <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                      <User className="h-5 w-5" />
+                    </div>
                     <Input
                       id="name"
                       type="text"
@@ -157,12 +156,12 @@ const AuthForm = ({ type, userRole }: AuthFormProps) => {
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       onFocus={() => handleFocus('name')}
                       onBlur={() => handleBlur('name')}
-                      className={`h-12 px-4 border-2 rounded-xl transition-all duration-200 ${
+                      className={`h-12 pl-10 pr-4 border-2 rounded-xl transition-all duration-200 ${
                         isFocused.name 
-                          ? 'border-orange-500 ring-2 ring-orange-200' 
+                          ? 'border-emerald-500 ring-2 ring-emerald-200' 
                           : 'border-gray-200 hover:border-gray-300'
-                      } focus:border-orange-500 focus:ring-2 focus:ring-orange-200`}
-                      placeholder="Hary"
+                      } focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200`}
+                      placeholder="Enter your full name"
                       required
                     />
                   </div>
@@ -175,6 +174,9 @@ const AuthForm = ({ type, userRole }: AuthFormProps) => {
                   Email Address
                 </Label>
                 <div className="relative">
+                  <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                    <Mail className="h-5 w-5" />
+                  </div>
                   <Input
                     id="email"
                     type="email"
@@ -182,11 +184,11 @@ const AuthForm = ({ type, userRole }: AuthFormProps) => {
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     onFocus={() => handleFocus('email')}
                     onBlur={() => handleBlur('email')}
-                    className={`h-12 px-4 border-2 rounded-xl transition-all duration-200 ${
+                    className={`h-12 pl-10 pr-4 border-2 rounded-xl transition-all duration-200 ${
                       isFocused.email 
-                        ? 'border-orange-500 ring-2 ring-orange-200' 
+                        ? 'border-emerald-500 ring-2 ring-emerald-200' 
                         : 'border-gray-200 hover:border-gray-300'
-                    } focus:border-orange-500 focus:ring-2 focus:ring-orange-200`}
+                    } focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200`}
                     placeholder="your.email@example.com"
                     required
                   />
@@ -199,6 +201,9 @@ const AuthForm = ({ type, userRole }: AuthFormProps) => {
                   Password
                 </Label>
                 <div className="relative">
+                  <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                    <Lock className="h-5 w-5" />
+                  </div>
                   <Input
                     id="password"
                     type={showPassword ? 'text' : 'password'}
@@ -206,19 +211,19 @@ const AuthForm = ({ type, userRole }: AuthFormProps) => {
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                     onFocus={() => handleFocus('password')}
                     onBlur={() => handleBlur('password')}
-                    className={`h-12 px-4 pr-12 border-2 rounded-xl transition-all duration-200 ${
+                    className={`h-12 pl-10 pr-12 border-2 rounded-xl transition-all duration-200 ${
                       isFocused.password 
-                        ? 'border-orange-500 ring-2 ring-orange-200' 
+                        ? 'border-emerald-500 ring-2 ring-emerald-200' 
                         : 'border-gray-200 hover:border-gray-300'
-                    } focus:border-orange-500 focus:ring-2 focus:ring-orange-200`}
-                    placeholder="••••••••"
+                    } focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200`}
+                    placeholder="Enter your password"
                     required
                   />
                   <Button
                     type="button"
                     variant="ghost"
                     size="sm"
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0 hover:bg-orange-50 rounded-lg"
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0 hover:bg-emerald-50 rounded-lg"
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? (
@@ -242,19 +247,19 @@ const AuthForm = ({ type, userRole }: AuthFormProps) => {
                     id="terms"
                     checked={agreeToTerms}
                     onCheckedChange={(checked) => setAgreeToTerms(checked as boolean)}
-                    className="data-[state=checked]:bg-orange-600 data-[state=checked]:border-orange-600 mt-0.5"
+                    className="data-[state=checked]:bg-emerald-600 data-[state=checked]:border-emerald-600 mt-0.5"
                   />
                   <label htmlFor="terms" className="text-sm text-gray-600 leading-5 cursor-pointer">
-                    I confirm that I am over 18 years old and agree to HealthHub's{' '}
-                    <Link href="#" className="text-orange-600 hover:text-orange-700 font-semibold hover:underline">Terms</Link> and{' '}
-                    <Link href="#" className="text-blue-600 hover:text-blue-700 font-semibold hover:underline">Privacy Policy</Link>.
+                    I agree to HealthHub's{' '}
+                    <Link href="#" className="text-emerald-600 hover:text-emerald-700 font-semibold hover:underline">Terms</Link> and{' '}
+                    <Link href="#" className="text-emerald-600 hover:text-emerald-700 font-semibold hover:underline">Privacy Policy</Link>
                   </label>
                 </div>
               )}
 
               <Button 
                 type="submit" 
-                className="w-full h-12 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5"
+                className="w-full h-12 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5"
                 disabled={loading || (isSignup && !agreeToTerms)}
               >
                 {loading ? (
@@ -271,25 +276,12 @@ const AuthForm = ({ type, userRole }: AuthFormProps) => {
               </Button>
             </form>
 
-            {/* Separator */}
-            <div className="mt-8 mb-6">
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-300"></div>
-                </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="px-3 bg-white text-gray-500 font-medium">Secure Authentication</span>
-                </div>
-              </div>
-            </div>
-
-
             {/* Alternative Link */}
             <div className="mt-8 text-center p-4 bg-gray-50 rounded-xl border border-gray-200">
               <span className="text-gray-600">{altLinkText} </span>
               <Link 
                 href={altLinkPath}
-                className="text-orange-600 hover:text-orange-700 font-semibold hover:underline transition-colors duration-200"
+                className="text-emerald-600 hover:text-emerald-700 font-semibold hover:underline transition-colors duration-200"
               >
                 {altLinkAction}
               </Link>
@@ -297,8 +289,8 @@ const AuthForm = ({ type, userRole }: AuthFormProps) => {
 
             {/* Security Badge */}
             <div className="mt-6 text-center">
-              <div className="inline-flex items-center space-x-2 text-xs text-gray-500 bg-gray-100 px-3 py-2 rounded-full">
-                <Shield className="h-3 w-3 text-green-500" />
+              <div className="inline-flex items-center space-x-2 text-xs text-gray-500 bg-gray-100 px-4 py-2 rounded-full">
+                <Shield className="h-3 w-3 text-emerald-500" />
                 <span>HIPAA Compliant • End-to-End Encrypted</span>
               </div>
             </div>
