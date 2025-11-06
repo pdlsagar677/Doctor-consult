@@ -205,7 +205,7 @@ const DoctorAppointmentContent = () => {
                 <div className="flex items-center justify-between p-3 bg-gradient-to-r from-orange-50 to-orange-100 rounded-xl">
                   <span className="text-sm font-semibold text-gray-900">Consultation Fee</span>
                   <span className="text-lg font-bold text-orange-600">
-                    ₹{appointment.doctorId?.fees}
+                    Rs.{appointment.doctorId?.fees}
                   </span>
                 </div>
 

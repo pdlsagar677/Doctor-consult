@@ -103,10 +103,10 @@ const ConsultationStep = ({
                       isSelected ? "text-indigo-600" : "text-gray-900"
                     }`}
                   >
-                    ₹{currentPrice}
+                    Rs.{currentPrice}
                   </p>
                   {price !== 0 && (
-                    <p className="text-sm text-green-600 font-semibold mt-1">Save ₹{Math.abs(price)}</p>
+                    <p className="text-sm text-green-600 font-semibold mt-1">Save Rs.{Math.abs(price)}</p>
                   )}
                 </div>
               </div>
@@ -125,7 +125,7 @@ const ConsultationStep = ({
             </p>
           </div>
           <div className="text-right">
-            <span className="text-2xl font-bold text-indigo-600">₹{getConsultationPrice()}</span>
+            <span className="text-2xl font-bold text-indigo-600">Rs.{getConsultationPrice()}</span>
             <p className="text-indigo-700 text-sm mt-1">Including doctor fees</p>
           </div>
         </div>

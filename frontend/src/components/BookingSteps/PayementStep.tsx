@@ -220,12 +220,12 @@ const PaymentStep = ({
           <div className="flex justify-between"><span className="text-gray-600">Doctor</span><span className="font-medium">{doctorName}</span></div>
           <div className="flex justify-between"><span className="text-gray-600">Duration</span><span className="font-medium">{slotDuration} mins</span></div>
           <Separator />
-          <div className="flex justify-between"><span className="text-gray-600">Consultation Fee</span><span className="font-medium">₹{consultationFee}</span></div>
-          <div className="flex justify-between"><span className="text-gray-600">Platform Fee</span><span className="font-medium">₹{platformFees}</span></div>
+          <div className="flex justify-between"><span className="text-gray-600">Consultation Fee</span><span className="font-medium">{consultationFee}</span></div>
+          <div className="flex justify-between"><span className="text-gray-600">Platform Fee</span><span className="font-medium">{platformFees}</span></div>
           <Separator />
           <div className="flex justify-between text-lg font-semibold text-indigo-700">
             <span>Total Amount</span>
-            <span>₹{totalAmount}</span>
+            <span>Rs.{totalAmount}</span>
           </div>
         </div>
       </div>
@@ -306,7 +306,7 @@ const PaymentStep = ({
             ) : (
               <CreditCard className="w-5 h-5 mr-2 inline-block" />
             )}
-            <span>{appointmentId && patientName ? "Pay with eSewa" : `Pay ₹${totalAmount} & Book`}</span>
+            <span>{appointmentId && patientName ? "Pay with eSewa" : `Pay Rs.${totalAmount} & Book`}</span>
           </Button>
         </div>
       )}

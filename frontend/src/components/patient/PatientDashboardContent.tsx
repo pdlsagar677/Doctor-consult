@@ -174,7 +174,7 @@ const PatientDashboardContent = () => {
           <div className="flex flex-col gap-3">
             <div className="flex justify-between p-3 bg-gradient-to-r from-emerald-50 to-emerald-100 rounded-xl">
               <span className="text-sm font-semibold text-gray-900">Consultation Fee</span>
-              <span className="text-lg font-bold text-emerald-600">₹{appointment.doctorId?.fees}</span>
+              <span className="text-lg font-bold text-emerald-600">Rs.{appointment.doctorId?.fees}</span>
             </div>
 
             {appointment.symptoms && (

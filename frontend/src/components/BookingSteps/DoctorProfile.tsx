@@ -141,19 +141,19 @@ const DoctorProfile = ({ doctor }: DoctorProfileInterface) => {
                       Consultation Fee
                     </p>
                     <p className="text-sm text-emerald-100/80">
-                      {doctor.slotDurationMinutes || 30} minutes session
+                      {doctor.slotDurationMinutes || 15} minutes session
                     </p>
                   </div>
                 </div>
                 <div className="flex items-baseline space-x-3">
                   <p className="text-3xl font-bold text-white">
-                    ₹{doctor.fees}
+                    Rs.{doctor.fees}
                   </p>
                   <span className="text-sm text-emerald-100/70 line-through">
-                    ₹{doctor.fees + 200}
+                    Rs.{doctor.fees + 200}
                   </span>
                   <Badge className="bg-white text-emerald-600 text-xs font-bold">
-                    Save ₹200
+                    Save Rs.100
                   </Badge>
                 </div>
               </div>

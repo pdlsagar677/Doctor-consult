@@ -323,7 +323,7 @@ const DoctorListPage = () => {
                   </div>
 
                   <div className="text-center font-semibold text-emerald-600 mb-6">
-                    ₹{doctor.fees} / Consultation
+                    Rs.{doctor.fees} / Consultation
                   </div>
 
                   <Link href={`/patient/booking/${doctor._id}`} className="mt-auto">

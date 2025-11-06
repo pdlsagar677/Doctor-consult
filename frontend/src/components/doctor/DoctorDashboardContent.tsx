@@ -150,7 +150,7 @@ const DoctorDashboardContent = () => {
     },
     {
       title: "Total Revenue",
-      value: `₹${dashboardData?.stats?.totalRevenue?.toLocaleString() || "0"}`,
+      value: `Rs.{dashboardData?.stats?.totalRevenue?.toLocaleString() || "0"}`,
       icon: DollarSign,
       color: "text-lime-600",
       bgColor: "bg-lime-50",
@@ -277,7 +277,7 @@ const DoctorDashboardContent = () => {
                             ) : (
                               <Phone className="w-4 h-4 text-green-500" />
                             )}
-                            <span className="text-sm text-gray-500">₹{appointment.doctorId?.fees}</span>
+                            <span className="text-sm text-gray-500">Rs.{appointment.doctorId?.fees}</span>
                           </div>
                         </div>
                       </div>
@@ -338,7 +338,7 @@ const DoctorDashboardContent = () => {
                             ) : (
                               <Phone className="w-4 h-4 text-green-500" />
                             )}
-                            <span className="text-sm text-gray-500">₹{appointment.doctorId?.fees}</span>
+                            <span className="text-sm text-gray-500">Rs.{appointment.doctorId?.fees}</span>
                           </div>
                         </div>
                       </div>

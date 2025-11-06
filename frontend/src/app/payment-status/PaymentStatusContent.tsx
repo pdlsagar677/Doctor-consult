@@ -132,7 +132,7 @@ export default function PaymentStatusContent() {
                     <div className="flex justify-between">
                       <span className="text-gray-600">Amount Paid:</span>
                       <span className="font-medium text-green-600">
-                        ₹{amount || paymentData.total_amount}
+                        Rs.{amount || paymentData.total_amount}
                       </span>
                     </div>
                   )}

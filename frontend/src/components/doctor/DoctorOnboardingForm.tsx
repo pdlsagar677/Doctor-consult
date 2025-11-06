@@ -17,7 +17,7 @@ import { Input } from "../ui/input";
 import { Checkbox } from "../ui/checkbox";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
-import { ArrowLeft, ArrowRight, CheckCircle2, Building, Calendar, Clock, User, Award, Stethoscope, MapPin } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, Building, Calendar, Clock,  Award, Stethoscope } from "lucide-react";
 
 const DoctorOnboardingForm = () => {
   const [currentStep, setCurrentStep] = useState<number>(1);
@@ -45,7 +45,7 @@ const DoctorOnboardingForm = () => {
     slotDurationMinutes: 30,
   });
 
-  const { updateProfile, user, loading } = userAuthStore();
+  const { updateProfile,  loading } = userAuthStore();
   const router = useRouter();
 
   const handleCategoryToggle = (category: string): void => {
@@ -313,7 +313,7 @@ const DoctorOnboardingForm = () => {
 
                 <div className="space-y-3">
                   <Label htmlFor="fees" className="text-sm font-semibold text-gray-700">
-                    Consultation Fee (₹)
+                    Consultation Fee (Rs.)
                   </Label>
                   <Input
                     id="fees"
@@ -447,8 +447,8 @@ const DoctorOnboardingForm = () => {
                       <SelectValue placeholder="Select slot duration" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="15">15 minutes</SelectItem>
-                      <SelectItem value="20">20 minutes</SelectItem>
+                      <SelectItem value="5">5 minutes</SelectItem>
+                      <SelectItem value="10">10 minutes</SelectItem>
                       <SelectItem value="30">30 minutes</SelectItem>
                       <SelectItem value="45">45 minutes</SelectItem>
                       <SelectItem value="60">60 minutes</SelectItem>
